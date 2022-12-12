@@ -15,9 +15,6 @@ type ProductsContextProps = {
     uploadImage:     ( data: any, id: string) => Promise<void>
 }
 
-
-
-
 export const ProductContext = createContext({} as ProductsContextProps);
 
 export const ProductProvider = ({ children }: any ) => {
@@ -27,7 +24,6 @@ export const ProductProvider = ({ children }: any ) => {
     useEffect(() => {
       loadProducts();
     }, [])
- 
 
 
     const loadProducts = async() => {
@@ -35,8 +31,25 @@ export const ProductProvider = ({ children }: any ) => {
         setProductsSate([...productsSate, ...resp.data.productos]);
         
     };
-    const addProduct = async(categoryId: string, productName: string) => {};
-    const updateProduct = async(categoryId: string, productName: string, productId: string) => {};
+    const addProduct = async(categoryId: string, productName: string) => {
+        const resp = await cafeapi.post<Producto>('/productos', {
+            nombre: productName, 
+            categoria: categoryId,
+        });
+        setProductsSate([...productsSate, resp.data]);
+       
+    };
+    const updateProduct = async(categoryId: string, productName: string, productId: string) => {
+        const resp = await cafeapi.put<Producto>(`/productos/${ productId }`, {
+            nombre: productName, 
+            categoria: categoryId,
+        });
+        setProductsSate( productsSate.map( prod => {
+            return (prod._id === productId )
+                    ? resp.data
+                    :prod;
+        }));
+    };
     const deleteProduct = async(id: string) => {};
     const loadProductById = async(id: string): Promise<Producto> => {
         const resp = await cafeapi.get<Producto>(`/productos/${ id }`);

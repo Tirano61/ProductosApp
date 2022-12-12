@@ -59,9 +59,10 @@ export const ProductScreen = ({ navigation, route }:Props) => {
 
     const saveOrUpdate = () => {
         if (id.length > 0) {
-            updateProduct(categoriaId, nombre, id);
+            console.log('update');
+            updateProduct(categoriaId, nombre, _id);
         }else{
-            
+            console.log('save');
             const tempCategoriaId = categoriaId || categoriesState[0]._id; 
             addProduct(  tempCategoriaId, nombre );
         }
@@ -90,10 +91,8 @@ export const ProductScreen = ({ navigation, route }:Props) => {
                     {
                         categoriesState.map( c  => (
                             <Picker.Item label={c.nombre} value={c._id} key={c._id} />
-
                         ))
                     }
-                    
                 </Picker>
                 <Button 
                     title='Guardar'
@@ -117,7 +116,6 @@ export const ProductScreen = ({ navigation, route }:Props) => {
                         </View>
                     )
                 }
-                
                 {
                     (img.length > 0) && (
                         <Image 

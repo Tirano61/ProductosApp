@@ -77,9 +77,8 @@ export const AuthProvider = ({ children }: any) => {
 
     const singIn = async( {correo,password}: Logindata ) => {
         try {
-            
             const resp = await cafeapi.post<LoginResponse>('/auth/login', { correo , password });
-            dispatch( { type:'singUp',
+            dispatch( { type: 'singUp',
                 payload:{
                     token: resp.data.token,
                     user: resp.data.usuario,
