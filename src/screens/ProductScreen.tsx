@@ -57,18 +57,19 @@ export const ProductScreen = ({ navigation, route }:Props) => {
         })
     }
 
-    const saveOrUpdate = () => {
+    const saveOrUpdate = async() => {
         if (id.length > 0) {
             console.log('update');
             updateProduct(categoriaId, nombre, _id);
         }else{
             console.log('save');
             const tempCategoriaId = categoriaId || categoriesState[0]._id; 
-            addProduct(  tempCategoriaId, nombre );
+            const newProduct = await addProduct(  tempCategoriaId, nombre );
+            onChange( newProduct._id, '_id');
         }
         
     }
-    
+
 
     return (
         <View style={styles.constainer}>
@@ -100,7 +101,7 @@ export const ProductScreen = ({ navigation, route }:Props) => {
                     onPress={() => saveOrUpdate()}
                 />
                 {
-                    (id.length > 0) && (
+                    (_id.length > 0) && (
                         <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
                             <Button 
                                 title='Cámara'
